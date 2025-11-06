@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {
+const {
   generateGoogleAccount,
   generateMultipleAccounts
-} from '../../lib/mirrors';
+} = require('../../lib/mirrors');
 
 type AccountData = {
   email: string;
@@ -27,7 +27,7 @@ type ResponseData = {
   error?: string;
 };
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
@@ -49,13 +49,13 @@ export default function handler(
     if (passwordLength) options.passwordLength = parseInt(passwordLength);
 
     if (accountCount === 1) {
-      const account = generateGoogleAccount(options) as AccountData;
+      const account = await generateGoogleAccount(options) as AccountData;
       return res.status(200).json({
         success: true,
         account
       });
     } else {
-      const accounts = generateMultipleAccounts(accountCount, options) as AccountData[];
+      const accounts = await generateMultipleAccounts(accountCount, options) as AccountData[];
       return res.status(200).json({
         success: true,
         accounts,

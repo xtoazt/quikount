@@ -85,7 +85,7 @@ export default function Home() {
               Free Google Account Generator
             </p>
             <p className="text-sm text-gray-500">
-              Powered by Quiklabs • Generate temporary accounts instantly
+              Powered by Quiklabs • Create real Google accounts via Skills Boost
             </p>
           </div>
 
@@ -246,24 +246,20 @@ export default function Home() {
           {/* Info Section */}
           <div className="mt-12 bg-white rounded-xl shadow-lg p-6 border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              ℹ️ Important Information
+              ℹ️ Account Information
             </h3>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-start gap-2">
                 <span className="text-indigo-600 mt-1">•</span>
-                <span>These are temporary account credentials generated for testing purposes.</span>
+                <span>Accounts are created in real-time via Google Skills Boost.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-indigo-600 mt-1">•</span>
-                <span>Accounts are generated using random data and temporary email addresses.</span>
+                <span>Each account is a fully functional Google account that you can use immediately.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-indigo-600 mt-1">•</span>
-                <span>Please use responsibly and in accordance with Google&apos;s Terms of Service.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-indigo-600 mt-1">•</span>
-                <span>Generated accounts are not automatically created on Google&apos;s servers.</span>
+                <span>Accounts are created through Quiklabs integration with Google Skills Boost.</span>
               </li>
             </ul>
           </div>
