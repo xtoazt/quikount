@@ -1,0 +1,1080 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>A Tour of Google Cloud Sustainability | Google Skills</title>
+<link crossorigin href='https://cdn.qwiklabs.com' rel='preconnect'>
+<link crossorigin href='https://fonts.gstatic.com' rel='preconnect'>
+<link crossorigin href='https://fonts.googleapis.com' rel='preconnect'>
+<link as='font' crossorigin='anonymous' href='https://cdn.qwiklabs.com/fonts/google-symbols.woff2' rel='preload' type='font/woff2'>
+<link as='font' crossorigin='anonymous' href='https://cdn.qwiklabs.com/fonts/material-icons.woff2' rel='preload' type='font/woff2'>
+<link as='font' crossorigin='anonymous' href='https://cdn.qwiklabs.com/fonts/google-material-icons.woff2' rel='preload' type='font/woff2'>
+<style>
+  @mixin font_face_props {
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+  }
+  
+  @font-face {
+    @include font_face_props;
+  
+    font-family: 'Google Material Icons';
+    src: url('https://cdn.qwiklabs.com/fonts/google-material-icons.woff2') format('woff2');
+  }
+  
+  @font-face {
+    @include font_face_props;
+  
+    font-family: 'Material Icons';
+    src: url('https://cdn.qwiklabs.com/fonts/material-icons.woff2') format('woff2');
+  }
+  
+  @font-face {
+    @include font_face_props;
+  
+    font-family: 'Google Symbols';
+    src: url('https://cdn.qwiklabs.com/fonts/google-symbols.woff2') format('woff2');
+  }
+  
+  .material-icons {
+    font-family: 'Material Icons';
+  }
+  
+  .google-symbols {
+    font-family: 'Google Symbols';
+  }
+  
+  .google-material-icons {
+    font-family: 'Google Material Icons';
+  }
+  
+  .material-icons,
+  .google-symbols,
+  .google-material-icons {
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+</style>
+
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="google-run";
+//]]>
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  const properties = JSON.parse(atob('eyJsb2NhbGUiOiJlbiIsInVzZXJfcm9sZXMiOiJzdHVkZW50IiwiZmVhdHVyZV9hdXRvX2NvdXJzZV91cGdyYWRlIjpmYWxzZSwiZmVhdHVyZV91c2VfZG9jZWJvX2ZlYXR1cmVzIjp0cnVlLCJmZWF0dXJlX2FnZV9nYXRlX3Jlc2V0IjpmYWxzZSwiZmVhdHVyZV9kYXNoYm9hcmRfam9icyI6ZmFsc2UsImZlYXR1cmVfaW5fY29udGV4dF9hbGxfbGFicyI6ZmFsc2UsImZlYXR1cmVfZ3dnX2NhdGFsb2ciOnRydWUsImZlYXR1cmVfb25yYW1wIjp0cnVlLCJmZWF0dXJlX2Jhcmtlcl9wYXVzZSI6ZmFsc2UsImZlYXR1cmVfbHRpX25vX2F1dG9tYXRpY191c2VyX2FjY291bnQiOnRydWUsImZlYXR1cmVfY2hhdF9vZmZfZm9yX3NpZ25lZF9vdXRfdXNlcnMiOnRydWUsImZlYXR1cmVfcmVsYXVuY2hfc3Vic2NyaXB0aW9ucyI6dHJ1ZSwiZmVhdHVyZV9nb29nbGVfZGV2X3BheW1lbnQiOnRydWUsImZlYXR1cmVfc2VhcmNoX3N1Z2dlc3Rpb25zIjp0cnVlLCJmZWF0dXJlX3BlZXJfYXNzaWdubWVudCI6ZmFsc2UsImZlYXR1cmVfc2hvd19uZXdfY291cnNlX2V4YW1zIjp0cnVlLCJmZWF0dXJlX2NyZWRseV9pbnRlZ3JhdGlvbl9hbm5vdW5jZW1lbnRfbW9kYWwiOnRydWUsImZlYXR1cmVfbmV3X3JlcG9ydF9maWVsZHMiOnRydWUsImZlYXR1cmVfcmVsYXVuY2hfZW1lcmdlbmN5X2J1dHRvbiI6ZmFsc2UsImZlYXR1cmVfYWxleGFuZHJpYV9zaG93X2J1bmRsZV9lcnJvcnMiOmZhbHNlLCJmZWF0dXJlX2NoYWxsZW5nZV9sYWJfZmFzdF90cmFjayI6dHJ1ZSwiZmVhdHVyZV9nY3Nib19kb21haW5fcmVkaXJlY3QiOmZhbHNlLCJmZWF0dXJlX29hdXRoX3Jpc2Nfc2h1dG9mZiI6dHJ1ZSwiZmVhdHVyZV9hZ3Jlc3NpdmVfbW9uc29vbl9xdW90YSI6ZmFsc2UsImZlYXR1cmVfaXdfYWlfYXNzaXN0YW50Ijp0cnVlLCJmZWF0dXJlX2dhbWlmaWNhdGlvbl94cCI6dHJ1ZSwiZmVhdHVyZV9jYW5vbmljYWxfZG9tYWluX3JlZGlyZWN0Ijp0cnVlLCJmZWF0dXJlX3N1YnNjcmlwdGlvbl91eCI6dHJ1ZSwiZmVhdHVyZV9lbnRpdHlfYXBpX2tleXMiOnRydWUsImZlYXR1cmVfb25lX3RhcCI6dHJ1ZSwiZmVhdHVyZV9sZWFybmVyX3Byb2ZpbGVfdXgiOmZhbHNlLCJmZWF0dXJlX3Rlc3RpbmdfRmVhdHVyZSI6ZmFsc2UsImZlYXR1cmVfc2VhcmNoX2FzeW5jIjp0cnVlLCJmZWF0dXJlX3Nob3dfaW50ZXJ2aWV3X3dhcm11cCI6dHJ1ZSwiZmVhdHVyZV9oaWRlX3ByaWNlIjp0cnVlLCJmZWF0dXJlX3dpcGVvdXRfaGFyZF9kZWxldGUiOnRydWUsImZlYXR1cmVfZG9jZWJvX3V4Ijp0cnVlLCJmZWF0dXJlX2NvdXJzZV9tb25ldGl6YXRpb24iOnRydWUsImZlYXR1cmVfbGVhcm5pbmdfcGxhbl9zZWFyY2giOnRydWUsImZlYXR1cmVfdGVsbF9uYXZ5X2FsbG93ZWRfem9uZXMiOnRydWUsImZlYXR1cmVfdXNlX21vc2FpYyI6dHJ1ZSwiZmVhdHVyZV9jcmVkbHlfbWFuYWdlbWVudCI6ZmFsc2UsImZlYXR1cmVfdXNlZF9pbiI6dHJ1ZSwiZmVhdHVyZV9ndWVzdF91c2VyIjp0cnVlLCJmZWF0dXJlX2RldmVsb3Blcl9wcmVtaXVtIjp0cnVlLCJmZWF0dXJlX2xhYl9leHBhbmRlZF9oaW50IjpmYWxzZSwiZmVhdHVyZV9kb2NlYm9fc3luYyI6dHJ1ZSwiZmVhdHVyZV9jb250ZW50X3Byb3ZpZGVyX2FkbWluIjp0cnVlLCJmZWF0dXJlX2lubm92YXRvcl9zaWduX2luIjp0cnVlLCJmZWF0dXJlX2dhbWlmaWNhdGlvbl9zdHJlYWtzIjp0cnVlLCJmZWF0dXJlX2xhbmRpbmdfcGFnZSI6dHJ1ZSwiZmVhdHVyZV9uZXdfY2FyZHMiOnRydWUsImZlYXR1cmVfaW5ub3ZhdG9yX21lbWJlcnNoaXBfbW9kYWwiOnRydWUsImZlYXR1cmVfaGVhZGVyX3NlYXJjaF9iYXIiOnRydWUsImZlYXR1cmVfZ2NzYm9fZnJlZSI6dHJ1ZSwiZmVhdHVyZV9zd2l0Y2hfcGF0aF9hbmRfZXhwbG9yZV9oZWFkZXJzIjp0cnVlLCJmZWF0dXJlX3RlYW1zIjp0cnVlLCJmZWF0dXJlX3NlYXJjaF9zb3J0X2J5Ijp0cnVlLCJmZWF0dXJlX2xhYl9pbnN0cnVjdGlvbl9oMl9yZWR1Y2VkX21hcmdpbiI6dHJ1ZSwiZmVhdHVyZV9vcmdfaW52aXRlX2xpbmsiOnRydWUsImZlYXR1cmVfcXVvdGFfbWFuYWdlbWVudCI6dHJ1ZSwiZmVhdHVyZV9wZXJmX3Rlc3QiOmZhbHNlLCJmZWF0dXJlX21vbnNvb25fcXVvdGFfdjIiOmZhbHNlLCJmZWF0dXJlX2hpZGVfdW5wb3B1bGFyX2ZpbHRlcnMiOnRydWUsImZlYXR1cmVfZ2FtaWZpY2F0aW9uX3VpIjp0cnVlLCJmZWF0dXJlX3NlYXJjaF91cGRhdGVzIjpmYWxzZSwiZmVhdHVyZV9ua19yb2xsYmFja192ZXJzaW9uIjpmYWxzZSwiZmVhdHVyZV9hbGV4YW5kcmlhX3N1YnNjcmlwdGlvbnNfcGFnaW5hdGlvbiI6dHJ1ZSwiZmVhdHVyZV9sYWJfc3NvIjp0cnVlLCJmZWF0dXJlX2xvZ19jb29raWVzIjpmYWxzZSwiZmVhdHVyZV9mZWVkYmFjayI6dHJ1ZSwiZmVhdHVyZV9ub19sdGlfc2Vzc2lvbl9yZWRpcmVjdCI6ZmFsc2UsImZlYXR1cmVfY2F0YWxvZ19maWx0ZXJfY2hpcHMiOnRydWUsImZlYXR1cmVfbGFiX3V4Ijp0cnVlLCJmZWF0dXJlX2dhbWlmaWNhdGlvbl9sZWFkZXJib2FyZHMiOnRydWUsImZlYXR1cmVfY291cnNlX2V4YW1zIjp0cnVlLCJmZWF0dXJlX3JlbGF1bmNoIjp0cnVlLCJmZWF0dXJlX2NvbW11bml0eV9mb3J1bSI6ZmFsc2UsImZlYXR1cmVfY2RuX2ZvbnRzIjp0cnVlLCJmZWF0dXJlX2dhbWlmaWNhdGlvbl91aV9kYXRhIjp0cnVlLCJmZWF0dXJlX3JlbGF1bmNoX2NvbGxlY3Rpb25fYWkiOnRydWUsImZlYXR1cmVfcmlzZV9wb2MiOnRydWUsImZlYXR1cmVfYWlfc2tpbGxzIjp0cnVlLCJmZWF0dXJlX3JlbGF1bmNoX2Zvcl9zc28iOnRydWUsImZlYXR1cmVfY2F0YWxvZ19maWx0ZXJzX2J1dHRvbiI6dHJ1ZSwiZmVhdHVyZV9nYW1pZmljYXRpb25fbGVhZ3VlcyI6dHJ1ZSwiZmVhdHVyZV9zaXRlbWFwX3BvYyI6dHJ1ZSwiZmVhdHVyZV9pbHRfY29udGVudF9wcm9ncmFtIjpmYWxzZSwiZmVhdHVyZV9jcmVkbHkiOnRydWUsImZlYXR1cmVfYWJfY29udGVudF9nY3Atb25kZW1hbmQtY29udGVudC9ULUdPT0dBVi1CfHByb2plY3Qtc2Vla2hvLXB1YmxpYy1jYXRhbG9nfDEuMHwxLjEiOmZhbHNlLCJmZWF0dXJlX2xhYl93YXJuaW5nX2V4cGVyaW1lbnQiOnRydWUsImZlYXR1cmVfZnJvbnRfZG9vcl9sYW5kaW5nX3BhZ2UiOnRydWUsImZlYXR1cmVfdHVyYm8iOmZhbHNlLCJmZWF0dXJlX3BlcnNvbmFsaXplZF9xdWVzdHMiOmZhbHNlLCJmZWF0dXJlX25vX2ZyZWVfY2hhdF9yb2xsb3V0Ijp0cnVlLCJmZWF0dXJlX2lubm92YXRvcl9tZW1iZXJzaGlwIjp0cnVlLCJmZWF0dXJlX21vbnNvb25fcXVvdGEiOmZhbHNlLCJmZWF0dXJlX3Nzb19pbnRlZ3JhdGlvbl9hY2Nlc3NfYWxsb3dsaXN0IjpmYWxzZSwiZmVhdHVyZV9nYW1pZmljYXRpb24iOnRydWUsImZlYXR1cmVfdGVzdF9mZWF0dXJlX2NscyI6ZmFsc2UsImZlYXR1cmVfYWN0aXZpdHlfc3luYyI6dHJ1ZSwiZmVhdHVyZV9kZWR1cF9iYWRnZSI6dHJ1ZSwiZmVhdHVyZV9nYW1pZmljYXRpb25fYWNoaWV2ZW1lbnRzIjp0cnVlLCJmZWF0dXJlX3Byb2dyYW1fYW5ub3VuY2VtZW50cyI6dHJ1ZSwiZmVhdHVyZV9jb3Vyc2VfYnVpbGRlciI6ZmFsc2UsImZlYXR1cmVfdXNlX21vc2FpY19jYWNoZSI6dHJ1ZSwiZmVhdHVyZV9yZXJvdXRlX25ld19pbnRlcnZpZXdfd2FybXVwIjp0cnVlLCJmZWF0dXJlX2NhY2hlX2V4cGxvcmVfcGFnZV9yZXN1bHQiOnRydWUsImZlYXR1cmVfaW5fY29udGV4dF92aWV3Ijp0cnVlLCJmZWF0dXJlX3JlbGF1bmNoX2V4dHJhIjp0cnVlLCJmZWF0dXJlX3NlYXJjaF9hdXRvY29tcGxldGUiOnRydWUsImZlYXR1cmVfc2hvd19hbm51YWxfcHVyY2hhc2Vfbm93Ijp0cnVlLCJmZWF0dXJlX2NoaW1lX2VtYWlsX21pZ3JhdGlvbiI6dHJ1ZSwiZmVhdHVyZV9zdXBwb3J0X2NhbGxvdXRzIjp0cnVlLCJncm91cF9zdWFkbWlucyI6ZmFsc2UsImdyb3VwX25vbl9zdWFkbWlucyI6dHJ1ZSwiZ3JvdXBfYWRtaW5zIjpmYWxzZSwiZ3JvdXBfdHJhaW5lcnMiOmZhbHNlLCJncm91cF9jb29yZGluYXRvcnMiOmZhbHNlLCJncm91cF9jcmVhdG9ycyI6ZmFsc2UsImdyb3VwX3N0dWRlbnRzIjp0cnVlLCJncm91cF9ub25fb3JnYW5pemF0aW9uIjp0cnVlLCJncm91cF9vcmdhbml6YXRpb25fbWVtYmVycyI6ZmFsc2UsImdyb3VwX25vbl9wcm9ncmFtIjp0cnVlLCJncm91cF9nb29nbGVycyI6ZmFsc2UsImdyb3VwX0NMUyI6ZmFsc2UsImdyb3VwX2VuZ19wcm9kdWN0IjpmYWxzZSwiZ3JvdXBfZ2FtaWZpY2F0aW9uX2JldGFfdGVzdGVycyI6ZmFsc2V9'));
+  properties.event = 'user_properties';
+  dataLayer.push(properties);
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    if (arguments[0] === 'event') {
+      dataLayer.push({ event: arguments[1], eventParams: arguments[2] }, { eventParams: undefined });
+    } else {
+      dataLayer.push(arguments);
+    }
+  }
+  let gtmLoaded = false;
+  function glueCookieNotificationBarLoaded() {
+    if (!gtmLoaded) {
+      dataLayerInit(
+        true,
+        false,
+        false,
+        false,
+        'google-run'
+      );
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',"GTM-MBRHNDG7");
+      pushPageEvent();
+      if (typeof sessEvent !== 'undefined') {
+        pushSessionEvent(sessEvent, sessLoginStatus, sessPreviousPath);
+      }
+      gtmLoaded = true;
+    }
+  }
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-2e147cb1679d97581f981243bfc2d1c03dc34a58.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/head_scripts-78121e337319c81329ed63eb61196ea57f74a57d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-5ee6eafe71fd3831091397e1aa344044a8642273.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-4b5777b9aaf86f7754631b331c54a3c6d5a24c27.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-0b6e59f3595aaf6ed7b53116006f8a9dc1c1cbbd.js"></script>
+<script src="https://cdn.qwiklabs.com/nk_components/1.1.38/index.js"></script>
+<script src="https://support.google.com/inapp/api.js"></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="rKskV7q1wKYkIp1WZW1LtGcAa3kDttYrWFYw5SLwFCGW9aPaPkshlYbgCz0IB5ZHmOvuayy_iuqWIN8nRgV5hg" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/google_standard_32.svg' property='msapplication-TileImage'>
+<meta content='{&quot;userId&quot;:103420172,&quot;experimentIds&quot;:[&quot;use_docebo_features&quot;,&quot;gwg_catalog&quot;,&quot;onramp&quot;,&quot;lti_no_automatic_user_account&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;relaunch_subscriptions&quot;,&quot;google_dev_payment&quot;,&quot;search_suggestions&quot;,&quot;show_new_course_exams&quot;,&quot;credly_integration_announcement_modal&quot;,&quot;new_report_fields&quot;,&quot;challenge_lab_fast_track&quot;,&quot;oauth_risc_shutoff&quot;,&quot;iw_ai_assistant&quot;,&quot;gamification_xp&quot;,&quot;canonical_domain_redirect&quot;,&quot;subscription_ux&quot;,&quot;entity_api_keys&quot;,&quot;one_tap&quot;,&quot;search_async&quot;,&quot;show_interview_warmup&quot;,&quot;hide_price&quot;,&quot;wipeout_hard_delete&quot;,&quot;docebo_ux&quot;,&quot;course_monetization&quot;,&quot;learning_plan_search&quot;,&quot;tell_navy_allowed_zones&quot;,&quot;use_mosaic&quot;,&quot;used_in&quot;,&quot;guest_user&quot;,&quot;developer_premium&quot;,&quot;docebo_sync&quot;,&quot;content_provider_admin&quot;,&quot;innovator_sign_in&quot;,&quot;gamification_streaks&quot;,&quot;landing_page&quot;,&quot;new_cards&quot;,&quot;innovator_membership_modal&quot;,&quot;header_search_bar&quot;,&quot;gcsbo_free&quot;,&quot;switch_path_and_explore_headers&quot;,&quot;teams&quot;,&quot;search_sort_by&quot;,&quot;lab_instruction_h2_reduced_margin&quot;,&quot;org_invite_link&quot;,&quot;quota_management&quot;,&quot;hide_unpopular_filters&quot;,&quot;gamification_ui&quot;,&quot;alexandria_subscriptions_pagination&quot;,&quot;lab_sso&quot;,&quot;feedback&quot;,&quot;catalog_filter_chips&quot;,&quot;lab_ux&quot;,&quot;gamification_leaderboards&quot;,&quot;course_exams&quot;,&quot;relaunch&quot;,&quot;cdn_fonts&quot;,&quot;relaunch_collection_ai&quot;,&quot;rise_poc&quot;,&quot;ai_skills&quot;,&quot;relaunch_for_sso&quot;,&quot;catalog_filters_button&quot;,&quot;gamification_leagues&quot;,&quot;sitemap_poc&quot;,&quot;credly&quot;,&quot;lab_warning_experiment&quot;,&quot;front_door_landing_page&quot;,&quot;no_free_chat_rollout&quot;,&quot;innovator_membership&quot;,&quot;gamification&quot;,&quot;activity_sync&quot;,&quot;dedup_badge&quot;,&quot;gamification_achievements&quot;,&quot;program_announcements&quot;,&quot;use_mosaic_cache&quot;,&quot;reroute_new_interview_warmup&quot;,&quot;cache_explore_page_result&quot;,&quot;in_context_view&quot;,&quot;relaunch_extra&quot;,&quot;search_autocomplete&quot;,&quot;show_annual_purchase_now&quot;,&quot;chime_email_migration&quot;,&quot;support_callouts&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this hands-on lab, you will learn why Google Cloud is the cleanest cloud in the industry by exploring and utilizing sustainability tools..' name='description'>
+<meta content='Google Skills' name='author'>
+<meta content='https://www.skills.google/focuses/32138' property='og:url'>
+<meta content='A Tour of Google Cloud Sustainability | Google Skills' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/google_standard_32.svg' property='og:image'>
+<meta content='Google Skills' property='og:site_name'>
+<meta content='In this hands-on lab, you will learn why Google Cloud is the cleanest cloud in the industry by exploring and utilizing sustainability tools..' property='og:description'>
+
+
+<link href='/google_standard_32.svg' rel='shortcut icon' type='image/x-icon'>
+<link href='https:///focuses/32138?parent=catalog' rel='canonical'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Google+Sans+Text:400,500,700" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-0d3d5a7e8a6fe06499021cb56b119614ba76507d.css" media="all" />
+<link rel="stylesheet" href="https://www.gstatic.com/glue/cookienotificationbar/cookienotificationbar.min.css" media="screen" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #355d9c;
+    --primary-text-on-surface-color-dark: #2f538b;
+    --primary-text-on-surface-color-darker: #29497a;
+    --primary-text-on-surface-color-darkest: #243e69;
+    --primary-surface-color: #586d8d;
+    --primary-surface-color-rgb: 88,109,141;
+    --primary-surface-color-light: #e0e4eb;
+    --primary-surface-color-lightest: #eff2f5;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f000e8;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #000000;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav relaunch learner-layout-body '>
+<ql-drawer-container class='body-container' relaunch>
+<div class='sticky' slot='header'>
+<ql-toolbar class='app-toolbar' jumpEnabled role='banner'>
+<div class='toolbar-navigation' slot='navigation'>
+<ql-toggle-button animatedToggle="true" expandable="true" for="app-nav" onIcon="menu_open" offIcon="menu" label="Menu" tip="Menu" class="always-show"></ql-toggle-button>
+</div>
+<div class='toolbar-title gs-logo' slot='title'>
+<a class="custom-logo" aria-label="Google Skills" href="/"><div class="custom-logo"><img alt="Google Skills" height="24" aria-label="Google Skills" src="https://cdn.qwiklabs.com/lqJbxogu4tSLez1OvjDcIO8rwow6cPLwvrfIdmQLf6U%3D" /></div></a>
+
+</div>
+<div class='search-bar tablet-hide' slot='search'><div class='search-bar-container visible-search-header'>
+<form class="header-search-form" action="/catalog" accept-charset="UTF-8" method="get">
+<input aria-autocomplete='list' aria-controls='searchbar-autocomplete-menu-center' aria-expanded='false' autocomplete='off' class='header-search-input' id='searchbar-autocomplete-center' name='keywords' placeholder='What do you want to learn today?' role='combobox'>
+<div class='elevation-3' id='searchbar-autocomplete-loading-icon-center'>
+<ql-spinner></ql-spinner>
+<div class='ql-body-small'>Loading...</div>
+</div>
+<div class='elevation-3' id='searchbar-autocomplete-no-results-center'>
+<div class='ql-body-small'>No results found.</div>
+</div>
+<ul aria-hidden='true' aria-live='polite' class='hide' id='searchbar-autocomplete-menu-center' role='listbox'></ul>
+<ql-icon-button class='search-bar-button search-button' icon='search' label='Search' type='submit'></ql-icon-button>
+</form>
+
+<ql-icon-button class='exit-search-button show-tablet' icon='close' inert label='Exit search'></ql-icon-button>
+</div>
+</div>
+<div class='toolbar-actions' slot='action'>
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<div class='toolbar-actions__points'>
+<ql-user-points title='Experience points'></ql-user-points>
+</div>
+<div class='toolbar-actions__streak-count mobile-hide' title='Current streak count'>
+<img alt="Current streak count" src="https://cdn.qwiklabs.com/assets/gamification/streak_icon-21476b37c13f49828a5aaa2d86c4d3378cca4117.svg" />
+<div class='ql-body-large count-label'>0</div>
+</div>
+<ql-icon-button class='header-search-button show-tablet' data-toggle='tooltip' icon='search' label='Search for Google Skills content' title='Search'></ql-icon-button>
+
+<ql-icon-button class='mobile-hide' data-toggle='tooltip' icon='help_outline' id='help-menu-button' label='Help options' title='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:103420172},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support-skills@google.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Send feedback' onclick='userfeedback.api.startFeedback(
+{
+&#39;productId&#39;: &#39;5080217&#39;,
+&#39;enableAnonymousFeedback&#39;: true,
+&#39;authuser&#39;: &#39;undefined&#39;,
+&#39;locale&#39;: &#39;en&#39;
+},
+{
+&#39;user_id&#39;: &#39;103420172&#39;,
+&#39;current_organization&#39;: &#39;&#39;
+})'></ql-menu-item>
+<ql-menu-item href='https://reportingwidget.google.com/widget/54?cid=1&amp;url=https://www.skills.google/focuses/32138?' label='Report Illegal Content'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' data-toggle='tooltip' icon='language' id='language' label='Language options' title='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/32138?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/32138?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/32138?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/32138?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/32138?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/32138?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/32138?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/32138?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/32138?locale=it&amp;parent=catalog' label='italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/32138?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/32138?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/32138?locale=pl&amp;parent=catalog' label='polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/32138?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/32138?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/32138?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/32138?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/32138?locale=uk&amp;parent=catalog' label='українська' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/32138?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/32138?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<!-- Main more button (mobile only) -->
+<ql-icon-button aria-expanded='false' aria-haspopup aria-label='More options' class='mobile-show' data-toggle='tooltip' icon='more_vert' id='mobile-more-menu-button' title='More options'></ql-icon-button>
+<!-- Main more menu -->
+<ql-menu for='mobile-more-menu-button' id='mobile-more-menu'>
+<!-- Help submenu trigger item -->
+<ql-menu-item aria-controls='help-submenu' aria-expanded='false' aria-haspopup='true' id='help-submenu-button' label='Help' role='button' tabindex='0'></ql-menu-item>
+<!-- Language Submenu Trigger Item -->
+<ql-menu-item aria-controls='language-submenu' aria-expanded='false' aria-haspopup='true' id='language-submenu-button' label='Language' role='button' tabindex='0'></ql-menu-item>
+</ql-menu>
+<!-- Help Submenu -->
+<!-- This menu is controlled by the item above. -->
+<ql-menu class='submenu' for='help-submenu-button' id='help-submenu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:103420172},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support-skills@google.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Send feedback' onclick='userfeedback.api.startFeedback(
+{
+&#39;productId&#39;: &#39;5080217&#39;,
+&#39;enableAnonymousFeedback&#39;: true,
+&#39;authuser&#39;: &#39;undefined&#39;,
+&#39;locale&#39;: &#39;en&#39;
+},
+{
+&#39;user_id&#39;: &#39;103420172&#39;,
+&#39;current_organization&#39;: &#39;&#39;
+})'></ql-menu-item>
+<ql-menu-item href='https://reportingwidget.google.com/widget/54?cid=1&amp;url=https%3A%2F%2Fwww.skills.google%2Ffocuses%2F32138%3F' label='Report Illegal Content'></ql-menu-item>
+</ql-menu>
+<!-- Language Submenu -->
+<!-- This menu is controlled by the item above. -->
+<ql-menu class='submenu' for='language-submenu-button' id='language-submenu'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/32138?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/32138?locale=de&amp;parent=catalog' label='Deutsch' lang='de' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/32138?locale=en&amp;parent=catalog' label='English' lang='en' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/32138?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/32138?locale=fr&amp;parent=catalog' label='français' lang='fr' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/32138?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/32138?locale=he&amp;parent=catalog' label='עברית' lang='he' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/32138?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/32138?locale=it&amp;parent=catalog' label='italiano' lang='it' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/32138?locale=ja&amp;parent=catalog' label='日本語' lang='ja' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/32138?locale=ko&amp;parent=catalog' label='한국어' lang='ko' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/32138?locale=pl&amp;parent=catalog' label='polski' lang='pl' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/32138?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/32138?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/32138?locale=ru&amp;parent=catalog' label='русский' lang='ru' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/32138?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/32138?locale=uk&amp;parent=catalog' label='українська' lang='uk' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/32138?locale=zh&amp;parent=catalog' label='简体中文' lang='zh' role='menuitem'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/32138?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW' role='menuitem'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button data-toggle='tooltip' id='my_account' label='My account' title='My account'>
+<ql-avatar src='https://lh3.googleusercontent.com/a/ACg8ocKXmXvUjt2Qm6WLRhOfqcMQq4QK2ERvuBRdxOAY1xvNIi5N4Q=s320-c'></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu'>
+<div class='learner-profile-account-menu my-account-menu'>
+<div class='learner-profile-account-menu__notifications'>
+</div>
+<div class='learner-profile-account-menu__profile'>
+<ql-avatar size='88' src='https://lh3.googleusercontent.com/a/ACg8ocKXmXvUjt2Qm6WLRhOfqcMQq4QK2ERvuBRdxOAY1xvNIi5N4Q=s320-c'></ql-avatar>
+<div class='learner-profile-account-menu__metadata'>
+<h4 class='ql-title-large'>Rohan Salem</h4>
+<p class='ql-body-medium text--light'>
+</p>
+<div class='ql-body-medium l-mbs'>Member since 2025</div>
+<a class="ql-title-small" style="text-decoration:none" href="/my_account/payments"><ql-chip icon='award_star'>
+0 Credits
+</ql-chip>
+</a><div class='learner-profile-account-menu__credits'>
+<ql-button href='/subscriptions' label='Buy subscription' text></ql-button>
+</div>
+</div>
+</div>
+<div class='learner-profile-account-menu__options'>
+<ql-button href='/' icon='space_dashboard' label='Dashboard' text></ql-button>
+<ql-button href='/profile/activity' icon='lists' label='Progress' text></ql-button>
+<ql-button href='/my_account/profile' icon='settings' label='Settings' text></ql-button>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' icon='logout' label='Sign Out' method='delete' text></ql-button>
+</div>
+<div class='learner-profile-account-menu__footer'>
+<ql-button href='/privacy_policy' label='Privacy' target='_blank' text></ql-button>
+<ql-button href='/terms_of_service' label='Terms' text></ql-button>
+</div>
+</div>
+</ql-menu>
+
+
+
+</div>
+</ql-toolbar>
+</div>
+<!-- / "responsive" value of 768 should be aligned to scss variable "$drawer-responsive-breakpoint" -->
+<ql-drawer id='app-nav' openWidth='15' relaunch responsive='768' slot='drawer' width='6' widthUnit='rem'>
+<nav class='ql-sidenav relaunch'>
+<ql-fab class='navrail-search-button' expandable icon='search' label='Search'></ql-fab>
+<ql-sidenav-item href='/' icon='dashboard' label='Dashboard' relaunch>
+
+</ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='book_2' iconFill label='Catalog' relaunch>
+
+</ql-sidenav-item>
+
+<ql-sidenav-item href='/paths' icon='conversion_path' label='Paths' relaunch>
+
+</ql-sidenav-item>
+
+<ql-sidenav-item expandable icon='category' label='Collections' relaunch>
+<div class='sub-items' slot='submenu'>
+<ql-sidenav-item href='/collections/ai-boost-bites' label='AI Boost Bites' relaunch>
+
+</ql-sidenav-item>
+
+<ql-sidenav-item href='/collections/career-certificates' label='Career Certificates' relaunch>
+
+</ql-sidenav-item>
+
+<ql-sidenav-item href='/collections/cloud' label='Cloud' relaunch>
+
+</ql-sidenav-item>
+
+<ql-sidenav-item href='/collections/deepmind' label='DeepMind' relaunch>
+
+</ql-sidenav-item>
+
+</div>
+
+</ql-sidenav-item>
+
+<ql-sidenav-item href='/subscriptions' icon='subscriptions' label='Subscriptions' relaunch>
+
+</ql-sidenav-item>
+
+</nav>
+
+</ql-drawer>
+<ql-drawer-content class='body-content' slot='drawer-content'>
+<div class='banner'>
+<div class='console-free-trial-banner-container'>
+<div class='trial-banner'>
+<div class='trial-banner-actions'>
+<p class='trial-banner-text ql-body-medium'>
+Apply your skills in Google Cloud console
+</p>
+<div class='custom-action'>
+<ql-button elevated href='https://console.cloud.google.com/freetrial' label='Get started'></ql-button>
+</div>
+</div>
+</div>
+</div>
+
+<div id='callout-container'>
+</div>
+
+</div>
+<div class='page-header'>
+
+</div>
+<main id='jump-content'>
+<nav aria-label='Breadcrumb' class='breadcrumbs-container' role='navigation'>
+<ol>
+<li class='breadcrumb-item ql-label-medium'>
+<ql-icon-button href='/' icon='home_filled' iconFill></ql-icon-button>
+
+<ql-icon class='breadcrumb-arrow'>navigate_next</ql-icon>
+</li>
+<li class='breadcrumb-item ql-label-medium'>
+A Tour of Google Cloud Sustainability
+</li>
+</ol>
+</nav>
+
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+0/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Export the carbon footprint data
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button aria-label='Check my progress for Export the carbon footprint data' class='js-show-run-step-button' description='Export the carbon footprint data' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+0
+</span>
+/ 100
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;A Tour of Google Cloud Sustainability&quot;,&quot;lab_name&quot;:&quot;A Tour of Google Cloud Sustainability&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;google-run&quot;}' data-credits='0.0' data-focus-id='32138' data-lab-duration='3600' data-lab-instance-id='146770526' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-collapsible expanded id='tip-collapsible' useIconButton>
+<div slot='header'>
+<div class='ql-title-small'>Lab setup instructions and requirements</div>
+</div>
+<div slot='collapsible'>
+<div class='ql-body-medium'>Protect your account and progress. Always use a private browser window and lab credentials to run this lab.</div>
+<ql-button label='View instructions' onclick='ql.track(&#39;show_lab_instruction_console_expanded_true&#39;); document.getElementById(&#39;private-mode-modal&#39;).open();' outlined></ql-button>
+</div>
+</ql-collapsible>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel onramp' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:true}' labDetails='[{&quot;text&quot;:&quot;Open Google Cloud console&quot;,&quot;property&quot;:&quot;console_url&quot;,&quot;resource&quot;:&quot;project_0&quot;,&quot;href&quot;:&quot;https://www.cloudskillsboost.google/google_sso?fallback=https%3A%2F%2Faccounts.google.com%2FAddSession%3Fservice%3Daccountsettings%26sarp%3D1%26continue%3Dhttps%253A%252F%252Fconsole.cloud.google.com%252Fhome%252Fdashboard%253Fproject%253Dqwiklabs-gcp-04-4333bc34190c%2526walkthrough_id%253Dhttps%25253A%25252F%25252Fwww.cloudskillsboost.google%25252Fdisplay_in_context%25253Fdisplay_token%25253D0d0Y-ouW6Qu-CsVseeIDE9XaL7-w5snha34m9R1FOdQ%23Email%3Dstudent-01-afe05b9ff0a5%40qwiklabs.net\u0026relay=https%3A%2F%2Fconsole.cloud.google.com%2Fhome%2Fdashboard%3Fproject%3Dqwiklabs-gcp-04-4333bc34190c%26walkthrough_id%3Dhttps%253A%252F%252Fwww.cloudskillsboost.google%252Fdisplay_in_context%253Fdisplay_token%253D0d0Y-ouW6Qu-CsVseeIDE9XaL7-w5snha34m9R1FOdQ\u0026token=KX7VU1_VZmfxwYvZbxkGQ4h1Hncvq1-ECJk2-m7umko&quot;,&quot;type&quot;:&quot;button&quot;,&quot;usePrivateMode&quot;:true},{&quot;label&quot;:&quot;Username&quot;,&quot;property&quot;:&quot;username&quot;,&quot;resource&quot;:&quot;user_0&quot;,&quot;value&quot;:&quot;student-01-afe05b9ff0a5@qwiklabs.net&quot;,&quot;type&quot;:&quot;credential&quot;},{&quot;label&quot;:&quot;Password&quot;,&quot;property&quot;:&quot;password&quot;,&quot;resource&quot;:&quot;user_0&quot;,&quot;value&quot;:&quot;jv5ooClgmFCL&quot;,&quot;type&quot;:&quot;credential&quot;},{&quot;label&quot;:&quot;Project ID&quot;,&quot;property&quot;:&quot;project_id&quot;,&quot;resource&quot;:&quot;project_0&quot;,&quot;value&quot;:&quot;qwiklabs-gcp-04-4333bc34190c&quot;,&quot;type&quot;:&quot;credential&quot;}]' labTimer='{&quot;ticking&quot;:true,&quot;secondsRemaining&quot;:2552}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                  var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+          var element = document.getElementById(id);
+          if (element !== null) element.value = token;
+        }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<div class='lab-content-container'>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='ql-display-large lab-preamble__title'>
+A Tour of Google Cloud Sustainability
+</h1>
+<div class='lab-preamble__details ql-title-medium'>
+<span>
+<ql-icon icon='experiment'></ql-icon>
+Lab
+</span>
+<span>
+<ql-icon icon='schedule'></ql-icon>
+1 hour
+</span>
+<span>
+<ql-icon>universal_currency_alt</ql-icon>
+No cost
+</span>
+<span>
+<ql-icon>show_chart</ql-icon>
+Introductory
+</span>
+</div>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/32138/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.4926'></div>
+
+</a></div>
+<div class='lab-preamble__ai_notice'>
+<ql-infobox>
+<span>
+<ql-icon>info</ql-icon>
+This lab may incorporate AI tools to support your learning.
+</span>
+</ql-infobox>
+</div>
+</div>
+<div class='lab-outline-mobile' id='outline_mobile'>
+<div class='header'>
+<div class='ql-label-small'>Lab instructions and tasks</div>
+<ql-toggle-button expandable for='outline_mobile' offIcon='expand_less' onIcon='expand_more'></ql-toggle-button>
+</div>
+<ul class='lab-content__outline'>
+<li><a href="#step1">GSP995</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Task 1. Overview of Google Cloud sustainability</a></li><li><a href="#step5">Task 2. Explore carbon footprint</a></li><li><a href="#step6">Task 3. Use the Cloud Region Picker</a></li><li><a href="#step7">Task 4. Reduce your cloud carbon footprint with Active Assist recommendations</a></li><li><a href="#step8">Congratulations!</a></li>
+</ul>
+</div>
+<div class='instruction-signed-in-card'>
+<div class='lab-mobile-card card elevation-2'>
+<img src="https://cdn.qwiklabs.com/assets/labs/send_link_image-5f833bd146929134c423c83e4bb520429ce72180.png" />
+<div class='ql-title-large'>This content is not yet optimized for mobile devices.</div>
+<div class='ql-body-large'>For the best experience, please visit us on a desktop computer using a link sent by email.</div>
+<ql-button href='/focuses/32138/resume_on_desktop_email?parent=catalog' icon='link' label='Send link' method='post'></ql-button>
+</div>
+
+</div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP995</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+
+<h2 id="step2">Overview</h2>
+<p>In this lab, you will learn why Google Cloud is the cleanest cloud in the industry by exploring and utilizing sustainability tools.</p>
+<h3>What you'll learn</h3>
+<p>In this lab, you learn how to perform the following tasks:</p>
+<ul>
+<li>Explore your Carbon Footprint Data</li>
+<li>Use the Cloud Region Picker</li>
+<li>Reduce your cloud carbon footprint with Active Assist recommendations</li>
+</ul>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources are made available to you.</p>
+<p>This hands-on lab lets you do the lab activities in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito (recommended) or private browser window to run this lab. This prevents conflicts between your personal account and the student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab—remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use only the student account for this lab. If you use a different Google Cloud account, you may incur charges to that account.
+</ql-warningbox>
+
+<h3>How to start your lab and sign in to the Google Cloud console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a dialog opens for you to select your payment method.
+On the left is the Lab Details pane with the following:</p>
+<ul>
+<li>The Open Google Cloud console button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Cloud console</strong> (or right-click and select <strong>Open Link in Incognito Window</strong> if you are running the Chrome browser).</p>
+<p>The lab spins up resources, and then opens another tab that shows the Sign in page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> below and paste it into the <strong>Sign in</strong> dialog.</p>
+<ql-code-block nowrap templated="">
+ {{{user_0.username | "Username"}}}
+ </ql-code-block>
+<p>You can also find the Username in the Lab Details pane.</p>
+</li>
+<li>
+<p>Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> below and paste it into the <strong>Welcome</strong> dialog.</p>
+<ql-code-block nowrap templated="">
+ {{{user_0.password | "Password"}}}
+ </ql-code-block>
+<p>You can also find the Password in the Lab Details pane.</p>
+</li>
+<li>
+<p>Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials the lab provides you. Do not use your Google Cloud account credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Google Cloud console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> To access Google Cloud products and services, click the <strong>Navigation menu</strong> or type the service or product name in the <strong>Search</strong> field.
+<img alt="Navigation menu icon and Search field" src="https://cdn.qwiklabs.com/9Fk8NYFp3quE9mF%2FilWF6%2FlXY9OUBi3UWtb2Ne4uXNU%3D">
+</ql-infobox>
+
+<h2 id="step4">Task 1. Overview of Google Cloud sustainability</h2>
+<p>Google is carbon neutral today, but aiming higher: our goal is to run on carbon-free energy, 24/7, at all of our data centers by 2030. Plus, we’re sharing technology, methods, and funding to enable organizations around the world to transition to more carbon-free and sustainable systems.</p>
+<p>We've built a collection of tools to help you accurately report the carbon emissions associated with your Google Cloud usage and take action to reduce your carbon footprint. The Carbon Sense suite brings together features from multiple Google Cloud products, like Active Assist and Carbon Footprint, to help users everywhere make progress towards ensuring a healthier planet.</p>
+<p>There are three key categories of carbon emissions associated with running workloads in the cloud:</p>
+<ul>
+<li>Electricity consumption</li>
+<li>Burning on-site fossil fuels</li>
+<li>Upstream and downstream activities</li>
+</ul>
+<p>Carbon-free energy includes wind, solar, geothermal, biomass, nuclear, hydropower, and pumped storage or battery storage discharge. For each region Google Cloud operates in, we measure the percentage of carbon free energy (CFE%) consumed in a particular location on an hourly basis.</p>
+<p>As a customer, the regional CFE score represents the average percentage of time your applications deployed in that cloud region will be running on carbon-free energy.</p>
+<p>To lower your carbon emissions, you need to reduce the electricity consumption of your cloud workloads from carbon-based sources. To lower your carbon emissions, we recommend the following primary strategies:</p>
+<ol>
+<li>Choose cloud regions with higher average hourly CFE%, and lower grid carbon intensity. For regions that have the same CFE%, use grid carbon intensity to further compare the emissions performance of those regions.</li>
+<li>Optimize cloud workloads to reduce carbon emissions. For example, increase efficiency by using elastic cloud services and autoscaling features to minimize unused compute resources, and run batch workloads during times when grid carbon intensity is lower.</li>
+<li>Set organizational policies to restrict the location of cloud resources to cleaner regions.</li>
+</ol>
+<h2 id="step5">Task 2. Explore carbon footprint</h2>
+<ol>
+<li>In the Google Cloud console, open the <strong>Navigation menu (<img alt="Navigation_menu" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">)</strong>, click <strong>View all Products</strong> &gt; <strong>Tools</strong> &gt; <strong>Carbon Footprint</strong>.</li>
+<li>Explore the provided graphs indicating yearly and monthly gross carbon footprint for the selected billing account. Notice the value of the metric <strong>Google Cloud's net operational greenhouse gas emissions</strong>.</li>
+<li>Provided graphs allow you to explore carbon emissions by month, project, service, and region.</li>
+<li>Learn more about how Google Cloud calculates these metrics from <a href="https://cloud.google.com/carbon-footprint/docs/methodology" target="_blank">Carbon footprint reporting methodology</a>.</li>
+</ol>
+<h3>Export the carbon footprint data</h3>
+<ol>
+<li>In the upper right pane, click <strong>Export</strong>.</li>
+<li>For <strong>Project</strong>, click <strong>Select Project</strong>.</li>
+<li>Select your Qwiklabs-generated project: <ql-variable key="project_0.project_id" placeholder="Lab Project ID for project_0"></ql-variable>.</li>
+<li>Click <strong>Configure Export</strong>.</li>
+</ol>
+<ql-infobox><p><strong>Note: </strong>If the Configure Export button is <strong>disabled</strong>: </p>
+<ol> Go to <strong>Navigation menu &gt; IAM &amp;Admin &gt; IAM</strong>.</ol>
+<ol>Click <strong>Edit principal</strong> icon for your assigned lab username.</ol>
+<ol>Click <strong>+ADD ANOTHER ROLE</strong> and select <strong>BigQuery Data Editor</strong> as another role and click <strong>Save</strong>.</ol>
+<ol>Navigate back to the <strong>Carbon Footprint</strong> page and retry the steps to <strong>Export</strong>.</ol></ql-infobox>
+
+<ol start="5">
+<li>Under <strong>Destination Settings</strong>, for <strong>Dataset</strong>, click <strong>Create New Dataset</strong>.</li>
+<li>For <strong>Dataset ID</strong>, enter <code>carbon_footprint_export</code>.</li>
+<li>Leave all fields with their default and click <strong>Create Dataset</strong>, then click <strong>Save</strong>.</li>
+<li>When prompted, select your Qwiklabs-generated account: <ql-variable key="user_0.username" placeholder="Lab user name for user_0"></ql-variable>.</li>
+</ol>
+
+<h3>Schedule the data backfill</h3>
+<ol>
+<li>On the Transfer Details page, click <strong>Schedule Backfill</strong> on the top right.</li>
+<li>Select <strong>Run for a date range</strong>
+</li>
+<li>Select August 15, 2022 as the <strong>start date</strong> and September 15, 2022 as the <strong>end date</strong>.</li>
+<li>Click <strong>Ok</strong> to request the data backfill.</li>
+</ol>
+<p>Data backfills will be created for the selected range, exporting historical monthly data to the destination dataset.</p>
+<p>Once the transfer is complete, you can view and query the data in BigQuery.</p>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="1">
+Export the carbon footprint data
+</ql-activity-tracking></p>
+<h2 id="step6">Task 3. Use the Cloud Region Picker</h2>
+<p>To reduce your overall emissions, we recommend that you choose regions with higher CFE% where possible. To help you pick cleaner regions, Google Cloud includes a Low CO2 indicator on some of the location selectors of the Cloud Console and the "Locations" pages of the Google Cloud documentation. Learn more about the criteria that a region must meet in order to receive this indicator from <a href="https://cloud.google.com/sustainability/region-carbon#region-picker" target="_blank">Carbon free energy for Google Cloud regions</a>.</p>
+<p>Using the Cloud Region picker, select your current location and select a region based on carbon footprint, cost, and latency:</p>
+<p><img alt="cloud region picker" src="https://cdn.qwiklabs.com/sC%2Bc%2FWMZCzIwyzFYv8w6l7PxRm7nw%2FzGnd5Sp8%2FY5ck%3D"></p>
+<h2 id="step7">Task 4. Reduce your cloud carbon footprint with Active Assist recommendations</h2>
+<p>You might observe that cost optimization practices that reduce idle (or inefficient use of) cloud resources also translate well to carbon footprint reduction. Idle resources create wastage by incurring unnecessary costs and emissions. Minimizing idle cloud resources can significantly improve your cloud sustainability.</p>
+<p>Active Assist is a portfolio of intelligent tools that helps you optimize your cloud operations with recommendations to reduce costs, increase performance, improve security, and even help you make more sustainable decisions.</p>
+<p>Unattended project recommender analyzes usage activity across all projects in your organization and provides you with the following features to help you discover, reclaim, and shut down unattended projects.</p>
+<p>Shutting down or reclaiming unattended projects can provide the following impact and benefits to your organization:</p>
+<ul>
+<li>Reduction in security risks (SECURITY)</li>
+<li>Reduction in unnecessary spending (COST)</li>
+<li>Reduction in carbon footprint associated with your workloads (SUSTAINABILITY)</li>
+</ul>
+<p>You can view unattended project recommendations using gcloud commands or the api. Because lab projects are created on-the-fly at lab launch, there are no unattended projects in this lab to view. Refer to <a href="https://cloud.google.com/recommender/docs/unattended-project-recommender" target="_blank">unattended project recommender documentation</a> for more details.</p>
+<h2 id="step8">Congratulations!</h2>
+<p>In this lab, you explored and exported Carbon Footprint Data, explored the Cloud Region Picker, and reduced your cloud carbon footprint with Active Assist recommendations.</p>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+
+<p><strong>Manual Last Updated November 5, 2024</strong></p>
+<p><strong>Lab Last Tested November 5, 2024</strong></p>
+<p>Copyright 2025 Google LLC. All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+
+
+
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<h4 class='ql-headline-medium'>
+Ready for more?
+<p>Here&#39;s another lab we think you&#39;ll like.</p>
+<div class='content-card-grid'>
+<ql-activity-card aria-label='Generative AI with Vertex AI: Prompt Design' name='Generative AI with Vertex AI: Prompt Design' path='/focuses/86501?parent=catalog' progress='0.0' relaunch_extra type='lab'></ql-activity-card>
+
+</div>
+</h4>
+</div>
+
+</div>
+</div>
+</ql-drawer-content>
+<ql-drawer end id='lab-outline-drawer' open slot='drawer' width='240'>
+<div aria-label='Lab Table of Contents' class='outline-container' id='js-outline-container' role='navigation'>
+<div class='ql-label-small'>Lab instructions and tasks</div>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP995</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Task 1. Overview of Google Cloud sustainability</a></li><li><a href="#step5">Task 2. Explore carbon footprint</a></li><li><a href="#step6">Task 3. Use the Cloud Region Picker</a></li><li><a href="#step7">Task 4. Reduce your cloud carbon footprint with Active Assist recommendations</a></li><li><a href="#step8">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</main>
+
+</ql-drawer-content>
+<footer slot='drawer-content'>
+<nav ariaLabel='Footer navigation' class='application-footer relaunch-extra'>
+
+<div class='footer-container'>
+<div class='footer-logo'>
+<a class="custom-logo" aria-label="Google Skills" href="/"><div class="custom-logo"><img alt="Google Skills" height="24" aria-label="Google Skills" src="https://cdn.qwiklabs.com/lqJbxogu4tSLez1OvjDcIO8rwow6cPLwvrfIdmQLf6U%3D" /></div></a>
+</div>
+<div class='footer-row'>
+<a href="/">Dashboard</a>
+<a href="/catalog">Catalog</a>
+<a href="/paths">Paths</a>
+<a href="/subscriptions">Subscriptions</a>
+<a href="/profile/stay_on_track">Activities</a>
+<a href="/profile/badges">Achievements</a>
+<a href="/my_account/profile">Settings</a>
+<a rel="nofollow" data-method="delete" href="/users/sign_out">Sign out</a>
+</div>
+<div class='footer-row'>
+<a class="g-cloud-youtube" target="_blank" rel="noopener" href="https://www.youtube.com/@googlecloud"><ql-icon icon='video_youtube'></ql-icon>
+Youtube
+</a><a rel="noopener" onclick="hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:103420172},&quot;context&quot;:&quot;lab&quot;}); return false;" href="/help">Help Center</a>
+<a href="/terms_of_service">Terms</a>
+<a target="_blank" href="/privacy_policy">Privacy</a>
+<a aria-hidden='true' class='glue-cookie-notification-bar-control'>
+Manage cookies
+</a>
+</div>
+</div>
+
+</nav>
+</footer>
+</ql-drawer-container>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+<script data-glue-cookie-notification-bar-category='2A' src='https://www.gstatic.com/glue/cookienotificationbar/cookienotificationbar.min.js'></script>
+
+
+
+<ql-dialog carousel id='private-mode-modal' noDefaultDismiss showPaginationProgress>
+<div class='page' slot='page'>
+<div class='page-content'>
+<img src="https://cdn.qwiklabs.com/assets/labs/start_lab-f45aca49782d4033c3ff688160387ac98c66941d.png" />
+<div class='page-text'>
+<h1 class='ql-headline-small'>
+Before you begin
+</h1>
+<div class='ql-body-large'>
+<ol>
+  <li>Labs create a Google Cloud project and resources for a fixed time</li>
+  <li>Labs have a time limit and no pause feature. If you end the lab, you'll have to restart from the beginning.</li>
+  <li>On the top left of your screen, click <strong>Start lab</strong> to begin</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class='page' slot='page'>
+<div class='page-content'>
+<img src="https://cdn.qwiklabs.com/assets/labs/open_incognito_window-3ab2004605e88542dd7732361c3fc0e010c7fb6e.png" />
+<div class='page-text'>
+<h1 class='ql-headline-small'>
+Use private browsing
+</h1>
+<div class='ql-body-large'>
+<ol>
+  <li>Copy the provided <strong>Username</strong> and <strong>Password</strong> for the lab</li>
+  <li>Click <strong>Open console</strong> in private mode</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class='page' slot='page'>
+<div class='page-content'>
+<img src="https://cdn.qwiklabs.com/assets/labs/google_sign_in-f9eb84339d08f7db8c5fdfa7ce7726d3531dae80.png" />
+<div class='page-text'>
+<h1 class='ql-headline-small'>
+Sign in to the Console
+</h1>
+<div class='ql-body-large'>
+<ol>
+  <li><strong>Sign in</strong> using your lab credentials. Using other credentials might cause errors or incur charges.</li>
+  <li><strong>Accept</strong> the terms, and skip the recovery resource page</li>
+  <li>Don't click <strong>End lab</strong> unless you've finished the lab or want to restart it, as it will clear your work and remove the project</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</ql-dialog>
+
+<ql-dialog headline='Score Details' icon='task_alt' id='jupyter-feedback-modal'>
+<iframe id='jupyter-feedback-frame' srcdoc='' title='Jupyter Feedback'></iframe>
+</ql-dialog>
+
+<ql-dialog id='lab-notification-dialog' noDefaultAction noDefaultDismiss>
+<img src="https://cdn.qwiklabs.com/assets/lab_enablement_notification/disable_lab-47cff1f6bc3610f58767251ff93c2f99cf4f9040.png" />
+<p class='title ql-headline-4'>This content is not currently available</p>
+<p class='description ql-body-1'>We will notify you via email when it becomes available</p>
+<ql-button href='/focuses/32138/set_up_lab_forward_url?parent=catalog' id='lab-notification-close-button' label='No, thanks' slot='action' text></ql-button>
+<ql-button fill id='lab-notification-submit' label='Yes, notify me' slot='action' text></ql-button>
+</ql-dialog>
+<ql-dialog id='lab-notification-subscribed-dialog' noDefaultAction noDefaultDismiss>
+<img src="https://cdn.qwiklabs.com/assets/lab_enablement_notification/notifcation_subscribed-2b4f9e51439e1a107488ab58a6e13c3c62ef8855.png" />
+<p class='title ql-headline-4'>Great!</p>
+<p class='description ql-body-1'>We will contact you via email if it becomes available</p>
+<ql-button href='/focuses/32138/set_up_lab_forward_url?parent=catalog' id='lab-notification-subscribed-close-button' label='Back to screen' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog forInnovator id='lab-quota-modal' noDefaultAction>
+<img id="quota-image" class="lab-image-small" src="https://cdn.qwiklabs.com/assets/quota_management/quota_empty-2ba3ec879dea3091828ec9cfa060947292e2c554.png" />
+<p class='title quota-header'>
+<p class='description quota-body'></p>
+<ql-button id='close_button' label='Got it' primary slot='action' text></ql-button>
+</p>
+</ql-dialog>
+<ql-dialog forInnovator id='lab-quota-one-lab-modal' noDefaultAction>
+<img id="quota-image" class="lab-image-medium" src="https://cdn.qwiklabs.com/assets/quota_management/one_lab_quota-77010e9a83e0a6c7543477868b8b808d70222adb.png" />
+<p class='title quota-header'>One lab at a time</p>
+<p class='description quota-body'>Confirm to end all existing labs and start this one</p>
+<ql-button id='cancel_button' label='Cancel' onclick='ql.quotaManagementAlert.closeOneLabModal();' primary slot='action' text></ql-button>
+<ql-button id='confirm_button' label='Confirm' primary slot='action' text></ql-button>
+<script>
+  var quotaEmptyPath = "https://cdn.qwiklabs.com/assets/quota_management/quota_empty-2ba3ec879dea3091828ec9cfa060947292e2c554.png";
+  var quotaWarningOneLeftPath = "https://cdn.qwiklabs.com/assets/quota_management/quota_1_warning-d4669345281d01d38c7a13eed888f72469860ed8.png";
+  var quotaWarningFiveLeftPath = "https://cdn.qwiklabs.com/assets/quota_management/quota_5_warning-4f647be02bcbb65e2bbf18ea19d5493032524116.png";
+</script>
+</ql-dialog>
+
+<ql-dialog id='incorrect-start-lab-modal' noDefaultAction noDefaultDismiss>
+<div class='body'>
+<img src="https://cdn.qwiklabs.com/assets/labs/open_incognito_window-3ab2004605e88542dd7732361c3fc0e010c7fb6e.png" />
+<div class='page-text'>
+<h1 class='ql-headline-small'>
+Use private browsing to run the lab
+</h1>
+<div class='ql-body-large'>
+Use an Incognito or private browser window to run this lab. This
+prevents any conflicts between your personal account and the Student
+account, which may cause extra charges incurred to your personal account.
+</div>
+</div>
+</div>
+<div class='actions'>
+<ql-button id='incorrect-start-lab-modal-cancel' label='Cancel' onclick='document.getElementById(&#39;incorrect-start-lab-modal&#39;).close()' slot='action'></ql-button>
+</div>
+</ql-dialog>
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this hands-on lab, you will learn why Google Cloud is the cleanest cloud in the industry by exploring and utilizing sustainability tools..
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+60m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://www.skills.google/catalog_lab/4678">https://www.skills.google/catalog_lab/4678</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="103420172" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="4678" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><md-outlined-text-field class="text optional" label="Additional Comments" name="lab_review[comment]" id="lab_review_comment" type="textarea" value=""></md-outlined-text-field></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='Are you sure? You may not be able to restart the lab, and you&#39;ll need to start from the beginning if you do.' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='End Lab' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  document.addEventListener("turbo:load", function () {
+    ql.initMaterialInputs();
+    initChosen();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    Turbo.session.drive = false;
+    ql.favoriting.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init({ openPanelAutomatically: true });
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"Are you sure? You may not be able to restart the lab, and you'll need to start from the beginning if you do.","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.searchHeader.init({isRelaunch: true});
+  (new ql.searchAutocomplete()).init({forHeaderNew: true, topSuggestions: [{"label":"machine learning"},{"label":"cloud architecture"},{"label":"generative ai"},{"label":"data analyst"},{"label":"security fundamentals"}]});
+  ql.messages.init();
+  ql.jumpContent.init();
+  
+  }, {once: true});
+</script>
+<script>
+  document.addEventListener("turbo:load", function () {
+    ql.celebrations.init({"course_complete":"COURSE COMPLETED","document_complete":"DOCUMENT COMPLETED","experience_label":"Experience points","lab_complete":"LAB COMPLETED","learning_plan_complete":"PATH COMPLETED","lesson_complete":"LESSON COMPLETED","quiz_complete":"QUIZ COMPLETED","video_complete":"VIDEO COMPLETED"});
+  }, {once: true});
+</script>
+<script>
+  document.addEventListener("turbo:load", function () {
+    ql.achievements.init();
+  }, {once: true});
+</script>
+
+</body>
+</html>
+
+

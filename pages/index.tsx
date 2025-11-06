@@ -4,16 +4,11 @@ import Head from 'next/head';
 interface Account {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  birthDate: {
-    day: string;
-    month: string;
-    year: string;
-  };
+  created?: boolean;
   createdAt: string;
   id: string;
+  error?: string;
+  note?: string;
 }
 
 export default function Home() {
@@ -54,7 +49,9 @@ export default function Home() {
       const data = await response.json();
 
       if (!data.success) {
-        throw new Error(data.error || 'Failed to generate account');
+        const errorMsg = data.error || 'Failed to generate account';
+        const details = (data as any).details ? `\n\nDetails: ${(data as any).details}` : '';
+        throw new Error(errorMsg + details);
       }
 
       if (data.account) {
@@ -142,7 +139,15 @@ export default function Home() {
           {/* Error Message */}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
-              <p className="font-medium">Error: {error}</p>
+              <p className="font-medium mb-2">Error: {error.split('\n')[0]}</p>
+              {error.includes('Details:') && (
+                <details className="mt-2">
+                  <summary className="cursor-pointer text-sm font-semibold">Show debugging details</summary>
+                  <pre className="mt-2 text-xs bg-red-100 p-2 rounded overflow-auto max-h-40">
+                    {error.split('Details:')[1]?.trim()}
+                  </pre>
+                </details>
+              )}
             </div>
           )}
 
@@ -218,32 +223,40 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Full Name */}
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
-                        Full Name
-                      </label>
-                      <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">
-                        {acc.fullName}
+                    {/* Status */}
+                    {acc.created !== undefined && (
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+                          Status
+                        </label>
+                        <div className={`px-3 py-2 border rounded-lg text-sm ${
+                          acc.created 
+                            ? 'bg-green-50 border-green-200 text-green-700' 
+                            : 'bg-yellow-50 border-yellow-200 text-yellow-700'
+                        }`}>
+                          {acc.created ? '✓ Account Created' : '⚠ Credentials Generated'}
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Birth Date */}
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
-                        Birth Date
-                      </label>
-                      <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">
-                        {acc.birthDate.month}/{acc.birthDate.day}/{acc.birthDate.year}
+                    {/* Note */}
+                    {acc.note && (
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">
+                          Note
+                        </label>
+                        <div className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+                          {acc.note}
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
 
                   {/* Copy All Button */}
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <button
                       onClick={() => {
-                        const accountText = `Email: ${acc.email}\nPassword: ${acc.password}\nName: ${acc.fullName}\nBirth Date: ${acc.birthDate.month}/${acc.birthDate.day}/${acc.birthDate.year}`;
+                        const accountText = `Email: ${acc.email}\nPassword: ${acc.password}`;
                         copyToClipboard(accountText, `all-${acc.id}`);
                       }}
                       className="w-full px-4 py-2 bg-indigo-50 text-indigo-700 font-medium rounded-lg hover:bg-indigo-100 transition-colors"

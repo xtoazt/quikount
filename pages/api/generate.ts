@@ -5,16 +5,11 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 type AccountData = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  birthDate: {
-    day: string;
-    month: string;
-    year: string;
-  };
+  created?: boolean;
   createdAt: string;
   id: string;
+  error?: string;
+  note?: string;
 };
 
 type ResponseData = {
@@ -102,11 +97,21 @@ export default async function handler(
     if (passwordLength) options.passwordLength = parseInt(passwordLength);
 
     if (accountCount === 1) {
-      const account = await generateGoogleAccount(options) as AccountData;
-      return res.status(200).json({
-        success: true,
-        account
-      });
+      try {
+        const account = await generateGoogleAccount(options) as AccountData;
+        return res.status(200).json({
+          success: true,
+          account
+        });
+      } catch (accountError: any) {
+        console.error('Error creating account:', accountError);
+        // Return error details for troubleshooting
+        return res.status(500).json({
+          success: false,
+          error: accountError.message || 'Failed to create account',
+          details: accountError.stack?.split('\n').slice(0, 5).join('\n')
+        });
+      }
     } else {
       const accounts = await generateMultipleAccounts(accountCount, options) as AccountData[];
       return res.status(200).json({
@@ -119,7 +124,8 @@ export default async function handler(
     console.error('Error generating account:', error);
     return res.status(500).json({
       success: false,
-      error: error.message || 'Failed to generate account'
+      error: error.message || 'Failed to generate account',
+      details: error.stack?.split('\n').slice(0, 5).join('\n')
     });
   }
 }
