@@ -1,8 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-const {
-  generateGoogleAccount,
-  generateMultipleAccounts
-} = require('../../lib/mirrors');
+
+// Dynamic import to avoid issues with require in TypeScript
+let generateGoogleAccount: any;
+let generateMultipleAccounts: any;
+
+try {
+  const mirrors = require('../../lib/mirrors');
+  generateGoogleAccount = mirrors.generateGoogleAccount;
+  generateMultipleAccounts = mirrors.generateMultipleAccounts;
+} catch (error) {
+  console.error('Failed to load mirrors.js:', error);
+}
 
 type AccountData = {
   email: string;
@@ -31,6 +39,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
+  // Log the incoming request for debugging
+  console.log('API Request:', {
+    method: req.method,
+    url: req.url,
+    body: req.body
+  });
+
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -39,21 +54,39 @@ export default async function handler(
     return res.status(200).end();
   }
 
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({
-      success: false,
-      error: 'Method not allowed. Use POST.'
-    });
-  }
-
-  // Set CORS headers
+  // Set CORS headers for all responses
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({
+      success: false,
+      error: `Method not allowed. Received ${req.method}, expected POST.`
+    });
+  }
+
   try {
-    const { count = 1, emailDomain, passwordLength } = req.body;
+    // Check if functions are loaded
+    if (!generateGoogleAccount || !generateMultipleAccounts) {
+      return res.status(500).json({
+        success: false,
+        error: 'Account generation functions not loaded. Please check server logs.'
+      });
+    }
+
+    // Parse body if it's a string (can happen in some cases)
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        console.error('Failed to parse body:', e);
+      }
+    }
+    
+    const { count = 1, emailDomain, passwordLength } = body || {};
 
     // Validate count
     const accountCount = Math.min(Math.max(parseInt(count) || 1, 1), 10); // Max 10 accounts at once
@@ -83,5 +116,15 @@ export default async function handler(
       error: error.message || 'Failed to generate account'
     });
   }
+}
+
+// Next.js API route configuration
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '1mb',
+    },
+    responseLimit: false,
+  },
 }
 
