@@ -4,8 +4,9 @@ const nextConfig = {
   swcMinify: true,
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.externals.push('puppeteer-core');
-      config.externals.push('@sparticuz/chromium');
+      // Don't externalize these - they need to be bundled for serverless
+      // config.externals.push('puppeteer-core');
+      // config.externals.push('@sparticuz/chromium');
     }
     // Ensure .js files in lib folder are handled correctly
     config.resolve.extensions.push('.js');
