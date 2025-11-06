@@ -259,11 +259,11 @@ export default function Home() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-indigo-600 mt-1">•</span>
-                <span>Please use responsibly and in accordance with Google's Terms of Service.</span>
+                <span>Please use responsibly and in accordance with Google&apos;s Terms of Service.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-indigo-600 mt-1">•</span>
-                <span>Generated accounts are not automatically created on Google's servers.</span>
+                <span>Generated accounts are not automatically created on Google&apos;s servers.</span>
               </li>
             </ul>
           </div>
