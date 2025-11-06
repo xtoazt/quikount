@@ -49,13 +49,13 @@ export default function handler(
     if (passwordLength) options.passwordLength = parseInt(passwordLength);
 
     if (accountCount === 1) {
-      const account = generateGoogleAccount(options);
+      const account = generateGoogleAccount(options) as AccountData;
       return res.status(200).json({
         success: true,
         account
       });
     } else {
-      const accounts = generateMultipleAccounts(accountCount, options);
+      const accounts = generateMultipleAccounts(accountCount, options) as AccountData[];
       return res.status(200).json({
         success: true,
         accounts,
