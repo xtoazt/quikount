@@ -1,16 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-// Dynamic import to avoid issues with require in TypeScript
-let generateGoogleAccount: any;
-let generateMultipleAccounts: any;
-
-try {
-  const mirrors = require('../../lib/mirrors');
-  generateGoogleAccount = mirrors.generateGoogleAccount;
-  generateMultipleAccounts = mirrors.generateMultipleAccounts;
-} catch (error) {
-  console.error('Failed to load mirrors.js:', error);
-}
+// Functions will be loaded in the handler
 
 type AccountData = {
   email: string;
@@ -68,11 +58,27 @@ export default async function handler(
   }
 
   try {
-    // Check if functions are loaded
-    if (!generateGoogleAccount || !generateMultipleAccounts) {
+    // Load mirrors.js functions (do this in handler for serverless compatibility)
+    let generateGoogleAccount: any;
+    let generateMultipleAccounts: any;
+    
+    try {
+      const mirrors = require('../../lib/mirrors');
+      generateGoogleAccount = mirrors.generateGoogleAccount;
+      generateMultipleAccounts = mirrors.generateMultipleAccounts;
+      
+      if (!generateGoogleAccount || !generateMultipleAccounts) {
+        console.error('Functions not found. Available exports:', Object.keys(mirrors));
+        return res.status(500).json({
+          success: false,
+          error: 'Account generation functions not found in mirrors module.'
+        });
+      }
+    } catch (loadError: any) {
+      console.error('Failed to load mirrors.js:', loadError.message);
       return res.status(500).json({
         success: false,
-        error: 'Account generation functions not loaded. Please check server logs.'
+        error: `Failed to load account generation module: ${loadError.message}`
       });
     }
 
