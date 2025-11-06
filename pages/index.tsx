@@ -39,6 +39,18 @@ export default function Home() {
         body: JSON.stringify({ count: accountCount }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = `Server error: ${response.status}`;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
       const data = await response.json();
 
       if (!data.success) {
@@ -52,6 +64,7 @@ export default function Home() {
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
+      console.error('Account generation error:', err);
     } finally {
       setLoading(false);
     }
